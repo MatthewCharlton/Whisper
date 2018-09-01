@@ -12,6 +12,7 @@
 <body>
     <h1 id="test">0</h1>
     <h1 id="test2" onclick="handleClick(this)">0</h1>
+    <h1 id="test3" onclick="whisper.getState(this, (e) => { this.textContent = e.detail.blah2 })">0</h1>
 
     <script>
         whisper.setState({ blah: 'aaaaaaa' })
@@ -25,6 +26,7 @@
             whisper.getState(el, (e) => { el.textContent = e.detail.blah })
             whisper.setState({ blah: '12313123' })
         }
+        whisper.setState({ blah2: 'xxxxxxxx' })
     </script>
 </body>
 
