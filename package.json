@@ -1,0 +1,24 @@
+{
+  "name": "whisper",
+  "version": "0.0.0",
+  "description": "State management framework using Events",
+  "main": "index.js",
+  "scripts": {
+    "babel": "babel --presets es2015 src/index.js -o build/bundle.js",
+    "start": "http-server"
+  },
+  "keywords": [
+    "State management",
+    "events",
+    "Modern browser",
+    "Node JS"
+  ],
+  "author": "Matt Charlton",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "http-server": "^0.11.1"
+  }
+}
