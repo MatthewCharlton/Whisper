@@ -1,6 +1,6 @@
+const GET_STATE = "getState";
+
 const whisper = {
-  self: this,
-  GET_STATE: "getState",
   subs: [],
   data: {},
   create(event, options) {
@@ -14,17 +14,15 @@ const whisper = {
     });
   },
   getState(element, fn) {
-    const event = this.create(this.GET_STATE, {
+    const event = this.create(GET_STATE, {
       bubbles: true,
       detail: this.data
     });
-    this.subscribe(element, event, this.GET_STATE, fn);
+    this.subscribe(element, event, GET_STATE, fn);
   },
   setState(data) {
     this.data = Object.assign(this.data, data, {});
     this.subs.forEach(function(item) {
-      console.log(item.element);
-      console.log(item.eventName);
       item.element.dispatchEvent(item.event);
     });
   }

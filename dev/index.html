@@ -19,6 +19,8 @@
         const test = document.getElementById('test')
         whisper.getState(test, (e) => { test.textContent = e.detail.blah })
 
+        whisper.setState({ blah: 'bbbbbb' })
+
         function handleClick(el) {
             whisper.getState(el, (e) => { el.textContent = e.detail.blah })
             whisper.setState({ blah: '12313123' })
