@@ -4,7 +4,8 @@
   "description": "State management framework using Events",
   "main": "index.js",
   "scripts": {
-    "babel": "babel --presets es2015 src/index.js -o build/bundle.js",
+    "build:client": "babel --presets es2015 src/clientSide/index.js -o build/client/bundle.js",
+    "build:server": "babel --presets es2015 src/serverSide/index.js -o build/server/bundle.js",
     "start": "http-server"
   },
   "keywords": [

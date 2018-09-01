@@ -6,11 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Whisper Dev</title>
-    <script src="../build/bundle.js"></script>
+    <script src="../build/client/bundle.js"></script>
 </head>
 
 <body>
+    <h1 id="test">0</h1>
+    <h1 id="test2">0</h1>
 
+    <script>
+        if (window && window.whisper) {
+            const test = document.getElementById('test')
+            test.addEventListener('getState', function (e) {
+                test.textContent = JSON.stringify(e.detail)
+            })
+            test.dispatchEvent(window.whisper.getState());
+
+            window.whisper.setState({ blah2: '12313123' })
+
+            test2.addEventListener('getState', function (e) {
+                test2.textContent = JSON.stringify(e.detail)
+            })
+            test2.dispatchEvent(window.whisper.getState());
+        }
+
+    </script>
 </body>
 
 </html>

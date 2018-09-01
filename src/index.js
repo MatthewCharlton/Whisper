@@ -1,7 +1,7 @@
-import WhisperClient from "./client";
-import WhisperServer from "./server";
+import WhisperClientSide from "./clientSide";
+import WhisperServerSide from "./serverSide";
 
-export default {
-  WhisperClient,
-  WhisperServer
+module.exports = {
+  WhisperClientSide,
+  WhisperServerSide
 };
