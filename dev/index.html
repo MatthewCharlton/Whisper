@@ -10,23 +10,27 @@
 </head>
 
 <body>
+    <div id="app"></div>
     <h1 id="test">0</h1>
-    <h1 id="test2">0</h1>
+    <h1 id="test2" onclick="handleClick(this)">0</h1>
 
     <script>
-        if (window && window.whisper) {
-            const test = document.getElementById('test')
-            test.addEventListener('getState', function (e) {
-                test.textContent = JSON.stringify(e.detail)
-            })
-            test.dispatchEvent(window.whisper.getState());
 
-            window.whisper.setState({ blah2: '12313123' })
+        const test = document.getElementById('test')
+        test.addEventListener('getState', function (e) {
+            this.textContent = e.detail.blah
+        })
+        test.dispatchEvent(whisper.getState());
 
-            test2.addEventListener('getState', function (e) {
-                test2.textContent = JSON.stringify(e.detail)
+        // whisper.setState({ blah2: '12313123' })
+
+        function handleClick(el) {
+            el.addEventListener('getState', function (e) {
+                el.textContent = e.detail.blah
             })
-            test2.dispatchEvent(window.whisper.getState());
+            el.dispatchEvent(whisper.getState());
+
+            whisper.setState({ blah: '12313123' })
         }
 
     </script>

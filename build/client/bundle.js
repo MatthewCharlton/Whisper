@@ -42,7 +42,3 @@ var WhisperClientSide = function () {
 }();
 
 var whisper = new WhisperClientSide();
-
-if (window) {
-  window.whisper = whisper;
-}
