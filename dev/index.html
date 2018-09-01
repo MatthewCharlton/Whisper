@@ -6,33 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Whisper Dev</title>
-    <script src="../build/client/bundle.js"></script>
+    <script src="../src/clientSide/index.js"></script>
 </head>
 
 <body>
-    <div id="app"></div>
     <h1 id="test">0</h1>
     <h1 id="test2" onclick="handleClick(this)">0</h1>
 
     <script>
+        whisper.setState({ blah: 'aaaaaaa' })
 
         const test = document.getElementById('test')
-        test.addEventListener('getState', function (e) {
-            this.textContent = e.detail.blah
-        })
-        test.dispatchEvent(whisper.getState());
-
-        // whisper.setState({ blah2: '12313123' })
+        whisper.getState(test, (e) => { test.textContent = e.detail.blah })
 
         function handleClick(el) {
-            el.addEventListener('getState', function (e) {
-                el.textContent = e.detail.blah
-            })
-            el.dispatchEvent(whisper.getState());
-
+            whisper.getState(el, (e) => { el.textContent = e.detail.blah })
             whisper.setState({ blah: '12313123' })
         }
-
     </script>
 </body>
 
