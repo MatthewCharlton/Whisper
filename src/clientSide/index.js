@@ -1,12 +1,14 @@
-const GET_STATE = "getState";
+var GET_STATE = 'getState';
 
-const whisper = {
+var whisper = {
   subs: [],
   data: {},
   create(event, options) {
     return new CustomEvent(event, options);
   },
   subscribe(element, event, eventName, fn) {
+    if (this.subs.indexOf(element) > -1)
+      this.subs.splice(this.subs.indexOf(element), 1);
     this.subs.push({
       element: element,
       listener: element.addEventListener(eventName, fn),
@@ -14,7 +16,7 @@ const whisper = {
     });
   },
   getState(element, fn) {
-    const event = this.create(GET_STATE, {
+    var event = this.create(GET_STATE, {
       bubbles: true,
       detail: this.data
     });

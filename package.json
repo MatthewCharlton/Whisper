@@ -3,11 +3,7 @@
   "version": "0.0.0",
   "description": "State management framework using Events",
   "main": "index.js",
-  "scripts": {
-    "build:client": "babel --presets es2015 src/clientSide/index.js -o build/client/bundle.js",
-    "build:server": "babel --presets es2015 src/serverSide/index.js -o build/server/bundle.js",
-    "start": "http-server"
-  },
+  "scripts": {},
   "keywords": [
     "State management",
     "events",
@@ -15,11 +11,5 @@
     "Node JS"
   ],
   "author": "Matt Charlton",
-  "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-es2015": "^6.24.1",
-    "http-server": "^0.11.1"
-  }
+  "license": "MIT"
 }
