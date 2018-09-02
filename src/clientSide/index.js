@@ -1,6 +1,6 @@
 var GET_STATE = 'getState';
 
-var whisper = {
+var Whisper = {
   subs: [],
   data: {},
   create(event, options) {

@@ -2,32 +2,37 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Whisper Dev</title>
-    <script src="../src/clientSide/index.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Whisper Dev</title>
+  <script src="../src/clientSide/index.js"></script>
 </head>
 
 <body>
-    <h1 id="test">0</h1>
-    <h1 id="test2" onclick="handleClick(this)">0</h1>
-    <h1 id="test3" onclick="whisper.getState(this, (e) => { this.textContent = e.detail.blah2 })">0</h1>
+  <h1 id="test">0</h1>
+  <h1 id="test2">0</h1>
+  <h1 id="test3" onclick="Whisper.getState(this, (e) => { this.textContent = e.detail.blah2 })">0</h1>
 
-    <script>
-        whisper.setState({ blah: 'aaaaaaa' })
+  <script>
+    (function (W) {
+      W.setState({ blah: 'aaaaaaa' })
 
-        const test = document.getElementById('test')
-        whisper.getState(test, (e) => { test.textContent = e.detail.blah })
+      var test = document.getElementById('test')
+      W.getState(test, (e) => { test.textContent = e.detail.blah })
 
-        whisper.setState({ blah: 'bbbbbb' })
+      W.setState({ blah: 'bbbbbb' })
 
-        function handleClick(el) {
-            whisper.getState(el, (e) => { el.textContent = e.detail.blah })
-            whisper.setState({ blah: '12313123' })
-        }
-        whisper.setState({ blah2: 'xxxxxxxx' })
-    </script>
+      document.getElementById('test2').addEventListener('click', handleClick)
+
+      function handleClick() {
+        W.getState(this, (e) => { this.textContent = e.detail.blah })
+        W.setState({ blah: '12313123' })
+      }
+      W.setState({ blah2: 'xxxxxxxx' })
+    })(Whisper)
+
+  </script>
 </body>
 
 </html>
