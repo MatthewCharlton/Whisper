@@ -1,13 +1,43 @@
-const EventEmitter = require("events");
+const EventEmitter = require('events');
 
-class WhisperServerSide extends EventEmitter {}
+var GET_STATE = 'getState';
 
-const WhisperServerSide = new WhisperServerSide();
-WhisperServerSide.on("event", () => {
+class Whisper extends EventEmitter {
+  // subs = [];
+  // data = {};
+  // create(event, options) {
+  //   return new CustomEvent(event, options);
+  // }
+  // subscribe(element, event, eventName, fn) {
+  //   if (this.subs.indexOf(element) > -1)
+  //     this.subs.splice(this.subs.indexOf(element), 1);
+  //   this.subs.push({
+  //     element: element,
+  //     listener: element.addEventListener(eventName, fn),
+  //     event: event
+  //   });
+  // }
+  // getState(element, fn) {
+  //   var event = this.create(GET_STATE, {
+  //     bubbles: true,
+  //     detail: this.data
+  //   });
+  //   this.subscribe(element, event, GET_STATE, fn);
+  // }
+  // setState(data) {
+  //   this.data = Object.assign(this.data, data, {});
+  //   this.subs.forEach(function(item) {
+  //     item.element.dispatchEvent(item.event);
+  //   });
+  // }
+}
+
+Whisper.on('event', () => {
   setImmediate(() => {
-    console.log("this happens asynchronously");
+    console.log('this happens asynchronously');
   });
 });
-WhisperServerSide.emit("event");
 
-export default WhisperServerSide;
+Whisper.emit('event');
+
+module.exports = { Whisper };
