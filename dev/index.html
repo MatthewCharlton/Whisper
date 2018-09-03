@@ -10,26 +10,32 @@
 </head>
 
 <body>
-  <h1 id="test">0</h1>
-  <h1 id="test2">0</h1>
-  <h1 id="test3" onclick="Whisper.getState(this, (e) => { this.textContent = e.detail.blah2 })">0</h1>
+  <h1 style="width: 100px; color: white; background: red; padding: 10px;" id="test">0</h1>
+  <h1 style="width: 100px; color: white; background: green; padding: 10px;" id="test2">0</h1>
+  <button id="button">Click Me</button>
+  <h1 style="width: 100px; color: white; background: blue; padding: 10px;" 
+      id="test3" 
+      onclick="Whisper.getState(this, (e) => { this.textContent = e.detail.blah3 })">
+      0
+    </h1>
 
   <script>
     (function (W) {
-      W.setState({ blah: 'aaaaaaa' })
-
       var test = document.getElementById('test')
+      var test2 = document.getElementById('test2')
+      var test3 = document.getElementById('test3')
       W.getState(test, (e) => { test.textContent = e.detail.blah })
+      W.getState(test2, (e) => { test2.textContent = e.detail.blah2 })
+      W.getState(test3, (e) => { test3.textContent = e.detail.blah3 })
+      W.setState({ blah: 'Test', blah2: 1, blah3: 0 })
 
-      W.setState({ blah: 'bbbbbb' })
+      var timer = setInterval( () => W.setState({  blah3: W.detail.blah3 + 1 }), 1000)
 
-      document.getElementById('test2').addEventListener('click', handleClick)
+      document.getElementById('button').addEventListener('click', handleClick)
 
       function handleClick() {
-        W.getState(this, (e) => { this.textContent = e.detail.blah })
-        W.setState({ blah: '12313123' })
+        W.setState({ blah2: parseInt(W.detail.blah2 + 1) })
       }
-      W.setState({ blah2: 'xxxxxxxx' })
     })(Whisper)
 
   </script>

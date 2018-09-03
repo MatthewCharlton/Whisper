@@ -1,8 +1,7 @@
-var GET_STATE = 'getState';
-
 var Whisper = {
+  GET_STATE_EVENT_NAME: 'getState',
   subs: [],
-  data: {},
+  detail: {},
   create(event, options) {
     return new CustomEvent(event, options);
   },
@@ -16,14 +15,15 @@ var Whisper = {
     });
   },
   getState(element, fn) {
-    var event = this.create(GET_STATE, {
+    var event = this.create(this.GET_STATE_EVENT_NAME, {
+      cancelable: true,
       bubbles: true,
-      detail: this.data
+      detail: this.detail
     });
-    this.subscribe(element, event, GET_STATE, fn);
+    this.subscribe(element, event, this.GET_STATE_EVENT_NAME, fn);
   },
-  setState(data) {
-    this.data = Object.assign(this.data, data, {});
+  setState(detail) {
+    this.detail = Object.assign(this.detail, detail, {});
     this.subs.forEach(function(item) {
       item.element.dispatchEvent(item.event);
     });
