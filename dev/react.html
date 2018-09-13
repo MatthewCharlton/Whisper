@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Whisper with React</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+  <script src="../src/clientSide/index.js"></script>
+
+  <script type="text/babel">
+    class Provider extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {}
+      }
+
+      componentDidMount() {
+        Whisper.get(ReactDOM.findDOMNode(this), (e) => { this.setState(e.detail) })
+      }
+
+      setData(object) {
+        Whisper.set(object)
+      }
+
+      render() {
+        const { children } = this.props;
+
+        const childrenWithProps = React.Children.map(children, child =>
+          React.cloneElement(child, { data: this.state, setData: this.setData }));
+
+        return <div>{childrenWithProps}</div>
+      }
+    }
+
+    class App extends React.Component {
+      constructor(props) {
+        super(props)
+      }
+
+      handleChange = (e) => {
+        const { value} = e.target
+        this.props.setData({ name: value })
+        console.log(Whisper)
+      }
+
+        render() {
+            const { name } = this.props.data
+            console.log('render')
+            return (
+              <div>
+                <p>Hello {name}</p>
+                <input onChange={this.handleChange} />
+              </div>
+              );
+        }
+    }
+
+    class Blah extends React.Component {
+      constructor(props) {
+        super(props)
+      }
+
+      handleChange = (e) => {
+        const { value} = e.target
+        this.props.setData({ blah: value })
+      }
+
+        render() {
+            const { blah } = this.props.data
+            return (
+              <div>
+                <p>Blah Blah {blah}</p>
+                <input onChange={this.handleChange} />
+              </div>
+              );
+        }
+    }
+
+    class Blah2 extends React.Component {
+      constructor(props) {
+        super(props)
+      }
+
+      componentDidMount() {
+        this.interval = setInterval(() => this.props.setData({ timer: this.props.data.timer + 1 || 0 }), 1000)
+      }
+
+       componentWillUnmount() {
+          clearInterval(this.interval);
+        }
+
+      handleChange = (e) => {
+        const { value} = e.target
+        this.props.setData({ blah2: value })
+      }
+
+      render() {
+          const { blah2, name, timer } = this.props.data
+         
+          return (
+            <div>
+              <p>{blah2} {timer}</p>
+              <input onChange={this.handleChange} />
+            </div>
+            );
+      }
+    }
+
+    ReactDOM.render(
+        <Provider>
+          <App />
+          <Provider>
+            <Blah2 />
+          </ Provider>
+          <Blah />
+        </ Provider>,
+        document.getElementById('root')
+    );
+</script>
+</body>
+
+</html>

@@ -17,7 +17,7 @@
     0
   </h1>
   <br />
-  <input placeholder="Type in me" onkeyup="Whisper.setState({blah4: this.value})" />
+  <input placeholder="Type in me" onkeyup="Whisper.set({blah4: this.value})" />
   <h1 id="test4" style="width: 300px; color: white; background: black; padding: 5px; height: 37px"></h1>
 
   <script>
@@ -27,18 +27,18 @@
       var test3 = document.getElementById('test3')
       var test4 = document.getElementById('test4')
 
-      W.getState(test, (e) => { test.textContent = e.detail.blah })
-      W.getState(test2, (e) => { test2.textContent = e.detail.blah2 })
-      W.getState(test3, (e) => { test3.textContent = e.detail.blah3 })
-      W.getState(test4, (e) => { test4.textContent = e.detail.blah4 })
-      W.setState({ blah: 'Test', blah2: 1, blah3: 0 })
+      W.get(test, (e) => { test.textContent = e.detail.blah })
+      W.get(test2, (e) => { test2.textContent = e.detail.blah2 })
+      W.get(test3, (e) => { test3.textContent = e.detail.blah3 })
+      W.get(test4, (e) => { test4.textContent = e.detail.blah4 })
+      W.set({ blah: 'Test', blah2: 1, blah3: 0 })
 
-      var timer = setInterval(() => W.setState({ blah3: W.detail.blah3 + 1 }), 1000)
+      var timer = setInterval(() => W.set({ blah3: W.detail.blah3 + 1 }), 1000)
 
       document.getElementById('button').addEventListener('click', handleClick)
 
       function handleClick() {
-        W.setState({ blah2: parseInt(W.detail.blah2 + 1) })
+        W.set({ blah2: parseInt(W.detail.blah2 + 1) })
       }
     })(Whisper)
 
