@@ -26,9 +26,12 @@ var Whisper = {
     return new CustomEvent(event, options);
   },
   subscribe(element, event, eventName, fn) {
-    if (this.subs.indexOf(element) > -1)
-      this.subs.splice(this.subs.indexOf(element), 1);
-    this.subs.push({
+    var subscribers = this.subs;
+    subscribers.forEach(function(item) {
+      if (item.element === element)
+        subscribers.splice(subscribers.indexOf(item), 1);
+    });
+    subscribers.push({
       element: element,
       listener: element.addEventListener(eventName, fn),
       event: event

@@ -16,7 +16,8 @@
   <script src="../src/clientSide/index.js"></script>
 
   <script type="text/babel">
-    class Provider extends React.Component {
+  function linkState(WrappedComponent) {
+    return class extends React.Component {
       constructor(props) {
         super(props)
         this.state = {}
@@ -31,14 +32,10 @@
       }
 
       render() {
-        const { children } = this.props;
-
-        const childrenWithProps = React.Children.map(children, child =>
-          React.cloneElement(child, { data: this.state, setData: this.setData }));
-
-        return <div>{childrenWithProps}</div>
+        return <WrappedComponent data={this.state} setData={this.setData} {...this.props} />
       }
     }
+  }
 
     class App extends React.Component {
       constructor(props) {
@@ -74,10 +71,10 @@
       }
 
         render() {
-            const { blah } = this.props.data
+            const { blah, name } = this.props.data
             return (
               <div>
-                <p>Blah Blah {blah}</p>
+                <p>{name} - Blah Blah {blah}</p>
                 <input onChange={this.handleChange} />
               </div>
               );
@@ -103,7 +100,7 @@
       }
 
       render() {
-          const { blah2, name, timer } = this.props.data
+          const { blah2, timer } = this.props.data
          
           return (
             <div>
@@ -114,14 +111,16 @@
       }
     }
 
+    const LinkedApp = linkState(App)
+    const LinkedBlah = linkState(Blah)
+    const LinkedBlah2 = linkState(Blah2)
+
     ReactDOM.render(
-        <Provider>
-          <App />
-          <Provider>
-            <Blah2 />
-          </ Provider>
-          <Blah />
-        </ Provider>,
+      <div>
+        <LinkedApp />
+        <LinkedBlah />
+        <LinkedBlah2 />
+      </div>,
         document.getElementById('root')
     );
 </script>

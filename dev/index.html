@@ -38,7 +38,11 @@
       document.getElementById('button').addEventListener('click', handleClick)
 
       function handleClick() {
+        W.get(test, (e) => { test.textContent = 'ijdbcdabcj' })
+
         W.set({ blah2: parseInt(W.detail.blah2 + 1) })
+
+        console.log(W)
       }
     })(Whisper)
 
