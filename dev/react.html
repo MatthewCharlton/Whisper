@@ -16,7 +16,7 @@
   <script src="../src/clientSide/index.js"></script>
 
   <script type="text/babel">
-  function linkState(WrappedComponent) {
+  function whisperLink(WrappedComponent) {
     return class extends React.Component {
       constructor(props) {
         super(props)
@@ -27,12 +27,12 @@
         Whisper.get(ReactDOM.findDOMNode(this), (e) => { this.setState(e.detail) })
       }
 
-      setData(object) {
+      whisperSet(object) {
         Whisper.set(object)
       }
 
       render() {
-        return <WrappedComponent data={this.state} setData={this.setData} {...this.props} />
+        return <WrappedComponent data={this.state} whisperSet={this.whisperSet} {...this.props} />
       }
     }
   }
@@ -44,7 +44,7 @@
 
       handleChange = (e) => {
         const { value} = e.target
-        this.props.setData({ name: value })
+        this.props.whisperSet({ name: value })
         console.log(Whisper)
       }
 
@@ -67,7 +67,7 @@
 
       handleChange = (e) => {
         const { value} = e.target
-        this.props.setData({ blah: value })
+        this.props.whisperSet({ blah: value })
       }
 
         render() {
@@ -87,7 +87,7 @@
       }
 
       componentDidMount() {
-        this.interval = setInterval(() => this.props.setData({ timer: this.props.data.timer + 1 || 0 }), 1000)
+        this.interval = setInterval(() => this.props.whisperSet({ timer: this.props.data.timer + 1 || 0 }), 1000)
       }
 
        componentWillUnmount() {
@@ -96,7 +96,7 @@
 
       handleChange = (e) => {
         const { value} = e.target
-        this.props.setData({ blah2: value })
+        this.props.whisperSet({ blah2: value })
       }
 
       render() {
@@ -111,9 +111,9 @@
       }
     }
 
-    const LinkedApp = linkState(App)
-    const LinkedBlah = linkState(Blah)
-    const LinkedBlah2 = linkState(Blah2)
+    const LinkedApp = whisperLink(App)
+    const LinkedBlah = whisperLink(Blah)
+    const LinkedBlah2 = whisperLink(Blah2)
 
     ReactDOM.render(
       <div>
