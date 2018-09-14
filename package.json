@@ -1,12 +1,13 @@
 {
   "name": "whisper",
-  "version": "0.0.0",
-  "description": "State management framework using Events",
-  "main": "index.js",
-  "scripts": {},
+  "version": "0.1.0",
+  "description": "State management library using CustomEvents in the browser and EventEmitter in Node",
+  "main": "",
+  "scripts": {
+    "start": "node dev/index.js"
+  },
   "keywords": [
-    "State management",
-    "events",
+    "Event driven state management",
     "Modern browser",
     "Node JS"
   ],

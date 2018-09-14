@@ -1,43 +1,33 @@
 const EventEmitter = require('events');
 
-var GET_STATE = 'getState';
-
-class Whisper extends EventEmitter {
-  // subs = [];
-  // data = {};
-  // create(event, options) {
-  //   return new CustomEvent(event, options);
-  // }
-  // subscribe(element, event, eventName, fn) {
-  //   if (this.subs.indexOf(element) > -1)
-  //     this.subs.splice(this.subs.indexOf(element), 1);
-  //   this.subs.push({
-  //     element: element,
-  //     listener: element.addEventListener(eventName, fn),
-  //     event: event
-  //   });
-  // }
-  // getState(element, fn) {
-  //   var event = this.create(GET_STATE, {
-  //     bubbles: true,
-  //     detail: this.data
-  //   });
-  //   this.subscribe(element, event, GET_STATE, fn);
-  // }
-  // setState(data) {
-  //   this.data = Object.assign(this.data, data, {});
-  //   this.subs.forEach(function(item) {
-  //     item.element.dispatchEvent(item.event);
-  //   });
-  // }
+class WhisperEvents extends EventEmitter {
+  constructor() {
+    super();
+    this.EVENT_NAME = 'getState';
+    this.detail = {};
+  }
 }
 
-Whisper.on('event', () => {
+const Whisper = new WhisperEvents();
+
+Whisper.on('setAsync', detail => {
   setImmediate(() => {
-    console.log('this happens asynchronously');
+    Whisper.detail = Object.assign(Whisper.detail, detail, {});
   });
 });
 
-Whisper.emit('event');
+Whisper.on('getAsync', fn => {
+  setImmediate(() => {
+    return fn(Whisper.detail);
+  });
+});
 
-module.exports = { Whisper };
+Whisper.on('set', detail => {
+  Whisper.detail = Object.assign(Whisper.detail, detail, {});
+});
+
+Whisper.on('get', fn => {
+  return fn(Whisper.detail);
+});
+
+module.exports = Whisper;
