@@ -23,12 +23,7 @@ var Whisper = {
     return new CustomEvent(event, options);
   },
   subscribe(element, event, eventName, fn) {
-    var subs = this.subs
-    subs.forEach(function(item) {
-      if (item.element === element) {
-        element.removeEventListener(eventName, event);
-      }
-    });
+    this.unsubscribe(element, event, eventName);
     this.subs.push({
       element: element,
       eventName: eventName,
@@ -37,10 +32,11 @@ var Whisper = {
     });
   },
   unsubscribe(element) {
-    this.subs.forEach(function(item) {
+    var subsArr = this.subs;
+    subsArr.forEach(function(item) {
       if (item.element === element) {
-        element.removeEventListener(this.EVENT_NAME);
-        this.subs.splice(this.subs.indexOf(item), 1);
+        element.removeEventListener(item.eventName, item.event);
+        subsArr.splice(subsArr.indexOf(item), 1);
       }
     });
   },

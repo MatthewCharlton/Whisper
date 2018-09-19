@@ -16,7 +16,7 @@
   <script src="../src/clientSide/index.js"></script>
 
   <script type="text/babel">
-  function whisperLink(WrappedComponent) {
+  function whisperLink(WrappedComponent, eventNamesArray) {
     return class extends React.Component {
       constructor(props) {
         super(props)
@@ -26,7 +26,9 @@
       }
 
       componentDidMount() {
-        this.whisperGet(ReactDOM.findDOMNode(this), (e) => { this.forceUpdate() })
+        this.whisperGet(ReactDOM.findDOMNode(this), () => { this.forceUpdate() })
+        eventNamesArray && 
+            eventNamesArray.map((event) => this.whisperGet(ReactDOM.findDOMNode(this), () => { this.forceUpdate() }, event))
       }
 
       componentWillUnmount() {
@@ -37,8 +39,8 @@
         Whisper.set(object, eventName)
       }
 
-      whisperGet(el, fn, id) {
-        Whisper.get(el, fn, id)
+      whisperGet(el, fn, eventName) {
+        Whisper.get(el, fn, eventName || this.id)
       }
 
       render() {
@@ -58,11 +60,12 @@
       }
 
         render() {
-            const { name } = this.props.data
+            const { name, timer } = this.props.data
             console.log('render')
             return (
               <div>
                 <p>Hello {name}</p>
+                <p>Timer {timer}</p>
                 <input onChange={this.handleChange} />
               </div>
               );
@@ -96,8 +99,7 @@
       }
 
       componentDidMount() {
-        this.props.whisperGet(ReactDOM.findDOMNode(this), (e) => this.forceUpdate(), this.props.id)
-        this.interval = setInterval(() => this.props.whisperSet({ timer2: this.props.data.timer2 + 1 || 0 }, this.props.id), 1000)
+        this.interval = setInterval(() => this.props.whisperSet({ timer: this.props.data.timer + 1 || 0 }, 'timer'), 1000)
       }
 
        componentWillUnmount() {
@@ -110,20 +112,20 @@
       }
 
       render() {
-          const { timer2, blah2, timer } = this.props.data  
+          const { timer, blah2, name } = this.props.data  
          
           return (
             <div>
-              <p>{blah2} - {timer} : {timer2}</p>
+              <p>{blah2} - {name} : {timer}</p>
               <input onChange={this.handleChange} />
             </div>
             );
       }
     }
 
-    const LinkedApp = whisperLink(App)
+    const LinkedApp = whisperLink(App, ['timer'])
     const LinkedBlah = whisperLink(Blah)
-    const LinkedBlah2 = whisperLink(Blah2)
+    const LinkedBlah2 = whisperLink(Blah2, ['timer'])
 
     ReactDOM.render(
       <div>

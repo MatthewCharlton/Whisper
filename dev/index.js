@@ -37,3 +37,18 @@ console.log('state2', state2); // state2 {}
 Whisper.emit('getAsync', e => (state2 = e));
 
 console.log('state2', state2); // state2 {}
+
+
+// Console output 
+
+// Synchronous
+// {}
+// { name: 'BLAH' }
+// state1 {}
+// state1 { name: 'BLAH' }
+// ====================================
+// Asynchronous
+// state2 {}
+// state2 {}
+// { name: 'BLAH' }
+// { name: 'BLAH', name2: 'BLAH' }
