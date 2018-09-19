@@ -1,6 +1,5 @@
 (function() {
   if (typeof window.CustomEvent === 'function') return false;
-
   function CustomEvent(event, params) {
     params = params || { bubbles: false, cancelable: false, detail: undefined };
     var evt = document.createEvent('CustomEvent');
@@ -12,9 +11,7 @@
     );
     return evt;
   }
-
   CustomEvent.prototype = window.Event.prototype;
-
   window.CustomEvent = CustomEvent;
 })();
 
@@ -26,27 +23,46 @@ var Whisper = {
     return new CustomEvent(event, options);
   },
   subscribe(element, event, eventName, fn) {
-    var subscribers = this.subs;
-    subscribers.forEach(function(item) {
-      if (item.element === element)
-        subscribers.splice(subscribers.indexOf(item), 1);
+    var subs = this.subs
+    subs.forEach(function(item) {
+      if (item.element === element) {
+        element.removeEventListener(eventName, event);
+      }
     });
-    subscribers.push({
+    this.subs.push({
       element: element,
+      eventName: eventName,
       listener: element.addEventListener(eventName, fn),
       event: event
     });
   },
-  get(element, fn) {
-    var event = this.create(this.EVENT_NAME, {
+  unsubscribe(element) {
+    this.subs.forEach(function(item) {
+      if (item.element === element) {
+        element.removeEventListener(this.EVENT_NAME);
+        this.subs.splice(this.subs.indexOf(item), 1);
+      }
+    });
+  },
+  get(element, fn, name) {
+    var eventName = name || this.EVENT_NAME;
+    var event = this.create(eventName, {
       cancelable: true,
       bubbles: true,
       detail: this.detail
     });
-    this.subscribe(element, event, this.EVENT_NAME, fn);
+    this.subscribe(element, event, eventName, fn);
   },
-  set(detail) {
+  set(detail, eventName) {
     this.detail = Object.assign(this.detail, detail, {});
+    if (eventName) {
+      this.subs.forEach(function(item) {
+        if (item.eventName === eventName) {
+          return item.element.dispatchEvent(item.event);
+        }
+      });
+      return;
+    }
     this.subs.forEach(function(item) {
       item.element.dispatchEvent(item.event);
     });

@@ -20,19 +20,29 @@
     return class extends React.Component {
       constructor(props) {
         super(props)
-        this.state = {}
+        this.id = Math.random()
+        .toString(32)
+        .slice(2, 12)
       }
 
       componentDidMount() {
-        Whisper.get(ReactDOM.findDOMNode(this), (e) => { this.setState(e.detail) })
+        this.whisperGet(ReactDOM.findDOMNode(this), (e) => { this.forceUpdate() })
       }
 
-      whisperSet(object) {
-        Whisper.set(object)
+      componentWillUnmount() {
+        Whisper.unsubscribe(ReactDOM.findDOMNode(this))
+      }
+
+      whisperSet(object, eventName) {
+        Whisper.set(object, eventName)
+      }
+
+      whisperGet(el, fn, id) {
+        Whisper.get(el, fn, id)
       }
 
       render() {
-        return <WrappedComponent data={this.state} whisperSet={this.whisperSet} {...this.props} />
+        return <WrappedComponent id={this.id} data={Whisper.detail} whisperSet={this.whisperSet} whisperGet={this.whisperGet} {...this.props} />
       }
     }
   }
@@ -45,7 +55,6 @@
       handleChange = (e) => {
         const { value} = e.target
         this.props.whisperSet({ name: value })
-        console.log(Whisper)
       }
 
         render() {
@@ -87,7 +96,8 @@
       }
 
       componentDidMount() {
-        this.interval = setInterval(() => this.props.whisperSet({ timer: this.props.data.timer + 1 || 0 }), 1000)
+        this.props.whisperGet(ReactDOM.findDOMNode(this), (e) => this.forceUpdate(), this.props.id)
+        this.interval = setInterval(() => this.props.whisperSet({ timer2: this.props.data.timer2 + 1 || 0 }, this.props.id), 1000)
       }
 
        componentWillUnmount() {
@@ -95,16 +105,16 @@
         }
 
       handleChange = (e) => {
-        const { value} = e.target
+        const { value } = e.target
         this.props.whisperSet({ blah2: value })
       }
 
       render() {
-          const { blah2, timer } = this.props.data
+          const { timer2, blah2, timer } = this.props.data  
          
           return (
             <div>
-              <p>{blah2} {timer}</p>
+              <p>{blah2} - {timer} : {timer2}</p>
               <input onChange={this.handleChange} />
             </div>
             );
