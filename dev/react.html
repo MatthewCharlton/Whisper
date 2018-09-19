@@ -49,7 +49,7 @@
     }
   }
 
-    class App extends React.Component {
+    class Blah extends React.Component {
       constructor(props) {
         super(props)
       }
@@ -61,7 +61,7 @@
 
         render() {
             const { name, timer } = this.props.data
-            console.log('render')
+            console.log('Blah render')
             return (
               <div>
                 <p>Hello {name}</p>
@@ -72,7 +72,7 @@
         }
     }
 
-    class Blah extends React.Component {
+    class Blah2 extends React.Component {
       constructor(props) {
         super(props)
       }
@@ -80,6 +80,7 @@
       handleChange = (e) => {
         const { value} = e.target
         this.props.whisperSet({ blah: value })
+        console.log('Blah2 render')
       }
 
         render() {
@@ -93,7 +94,7 @@
         }
     }
 
-    class Blah2 extends React.Component {
+    class Blah3 extends React.Component {
       constructor(props) {
         super(props)
       }
@@ -123,9 +124,9 @@
       }
     }
 
-    const LinkedApp = whisperLink(App, ['timer'])
-    const LinkedBlah = whisperLink(Blah)
-    const LinkedBlah2 = whisperLink(Blah2, ['timer'])
+    const LinkedApp = whisperLink(Blah, ['timer'])
+    const LinkedBlah = whisperLink(Blah2)
+    const LinkedBlah2 = whisperLink(Blah3, ['timer'])
 
     ReactDOM.render(
       <div>
