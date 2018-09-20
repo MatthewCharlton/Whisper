@@ -28,7 +28,7 @@
       componentDidMount() {
         this.whisperGet(ReactDOM.findDOMNode(this), () => { this.forceUpdate() })
         eventNamesArray && 
-            eventNamesArray.map((event) => this.whisperGet(ReactDOM.findDOMNode(this), () => { this.forceUpdate() }, event))
+          eventNamesArray.map((event) => this.whisperGet(ReactDOM.findDOMNode(this), () => { this.forceUpdate() }, event))
       }
 
       componentWillUnmount() {
@@ -49,93 +49,104 @@
     }
   }
 
-    class Blah extends React.Component {
-      constructor(props) {
-        super(props)
-      }
-
-      handleChange = (e) => {
-        const { value} = e.target
-        this.props.whisperSet({ name: value })
-      }
-
-        render() {
-            const { name, timer } = this.props.data
-            console.log('Blah render')
-            return (
-              <div>
-                <p>Hello {name}</p>
-                <p>Timer {timer}</p>
-                <input onChange={this.handleChange} />
-              </div>
-              );
-        }
+  class Blah extends React.Component {
+    constructor(props) {
+      super(props)
     }
 
-    class Blah2 extends React.Component {
-      constructor(props) {
-        super(props)
-      }
-
-      handleChange = (e) => {
-        const { value} = e.target
-        this.props.whisperSet({ blah: value })
-        console.log('Blah2 render')
-      }
-
-        render() {
-            const { blah, name } = this.props.data
-            return (
-              <div>
-                <p>{name} - Blah Blah {blah}</p>
-                <input onChange={this.handleChange} />
-              </div>
-              );
-        }
+    handleChange = (e) => {
+      const { value } = e.target
+      this.props.whisperSet({ name: value })
     }
 
-    class Blah3 extends React.Component {
-      constructor(props) {
-        super(props)
-      }
+    render() {
+      const { name, timer } = this.props.data
+      console.log('Blah render')
+      return (
+        <div>
+          <p>Hello {name}</p>
+          <p>Timer {timer}</p>
+          <input onChange={this.handleChange} />
+        </div>
+      );
+    }
+  }
 
-      componentDidMount() {
-        this.interval = setInterval(() => this.props.whisperSet({ timer: this.props.data.timer + 1 || 0 }, 'timer'), 1000)
-      }
-
-       componentWillUnmount() {
-          clearInterval(this.interval);
-        }
-
-      handleChange = (e) => {
-        const { value } = e.target
-        this.props.whisperSet({ blah2: value })
-      }
-
-      render() {
-          const { timer, blah2, name } = this.props.data  
-         
-          return (
-            <div>
-              <p>{blah2} - {name} : {timer}</p>
-              <input onChange={this.handleChange} />
-            </div>
-            );
-      }
+  class Blah2 extends React.Component {
+    constructor(props) {
+      super(props)
     }
 
-    const LinkedApp = whisperLink(Blah, ['timer'])
-    const LinkedBlah = whisperLink(Blah2)
-    const LinkedBlah2 = whisperLink(Blah3, ['timer'])
+    handleChangeBlah = (e) => {
+      const { value } = e.target
+      this.props.whisperSet({ blah: value })
+    }
 
-    ReactDOM.render(
-      <div>
-        <LinkedApp />
-        <LinkedBlah />
-        <LinkedBlah2 />
-      </div>,
-        document.getElementById('root')
-    );
+    handleChangeBanner = (e) => {
+      const { value } = e.target
+      this.props.whisperSet({ bannerText: value })
+    }
+
+    render() {
+      const { blah, name } = this.props.data
+      console.log('Blah2 render')
+      return (
+        <div>
+          <p>{name} - Blah Blah {blah}</p>
+          <input onChange={this.handleChangeBlah} />
+          <hr />
+          <input onChange={this.handleChangeBanner} />
+          <hr />
+        </div>
+      );
+    }
+  }
+
+  class Blah3 extends React.Component {
+    constructor(props) {
+      super(props)
+    }
+
+    componentDidMount() {
+      this.interval = setInterval(() => this.props.whisperSet({ timer: this.props.data.timer + 1 || 0 }, 'timer'), 1000)
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.interval);
+    }
+
+    handleChange = (e) => {
+      const { value } = e.target
+      this.props.whisperSet({ blah2: value })
+    }
+
+    render() {
+      const { timer, blah2, name, bannerText } = this.props.data  
+      return (
+        <div>
+          <p>{blah2} - {name} : {timer}</p>
+          <input onChange={this.handleChange} />
+          <hr />
+          <StateLessComp bannerText={bannerText} />
+        </div>
+      );
+    }
+  }
+
+  const StateLessComp = ({bannerText}) => <span>{bannerText}</span>
+
+  const LinkedBlah = whisperLink(Blah, ['timer'])
+  const LinkedBlah2 = whisperLink(Blah2)
+  const LinkedBlah3 = whisperLink(Blah3, ['timer'])
+
+  ReactDOM.render(
+    <div>
+      <LinkedBlah />
+      <LinkedBlah2 />
+      <LinkedBlah3 />
+    </div>,
+    document.getElementById('root')
+  );
 </script>
 </body>
 
