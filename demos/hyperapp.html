@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>hyperapp</title>
+  <script src="https://unpkg.com/hyperapp"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+  <script src="../src/clientSide/index.js"></script>
+</head>
+
+<body>
+
+  <script type="text/babel">
+    const { h, app } = hyperapp;
+    //@jsx h
+
+    let state = {}
+
+    const whisperLink = (component) => Whisper.get(component, () => state = Whisper.detail )
+
+    const actions = {
+      changeName: name => state => ({ name: name })
+    };
+
+    const Hello = ({ name }) => <h1>Hello {name}</h1>
+
+    const view = (state, actions) => (
+      <div>
+        <Hello name={state.name} />
+        <button onclick={() => actions.changeName('Batman')}>I'm Batman</button>
+      </div>
+    );
+
+    app(state, actions, view, document.body);
+  </script>
+</body>
+
+</html>
