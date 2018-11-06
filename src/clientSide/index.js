@@ -1,14 +1,9 @@
 (function() {
   if (typeof window.CustomEvent === 'function') return false;
   function CustomEvent(event, params) {
-    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    params = params || { bubbles: false, cancelable: false, state: undefined };
     var evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(
-      event,
-      params.bubbles,
-      params.cancelable,
-      params.detail
-    );
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.state);
     return evt;
   }
   CustomEvent.prototype = window.Event.prototype;
@@ -18,7 +13,7 @@
 var Whisper = {
   EVENT_NAME: 'getState',
   subs: [],
-  detail: {},
+  state: {},
   create(event, options) {
     return new CustomEvent(event, options);
   },
@@ -45,12 +40,12 @@ var Whisper = {
     var event = this.create(eventName, {
       cancelable: true,
       bubbles: true,
-      detail: this.detail
+      state: this.state
     });
     this.subscribe(element, event, eventName, fn);
   },
-  set(detail, eventName) {
-    this.detail = Object.assign(this.detail, detail, {});
+  set(state, eventName) {
+    this.state = Object.assign(this.state, state, {});
     if (eventName) {
       this.subs.forEach(function(item) {
         if (item.eventName === eventName) {

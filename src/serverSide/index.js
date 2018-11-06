@@ -4,30 +4,30 @@ class WhisperEvents extends EventEmitter {
   constructor() {
     super();
     this.EVENT_NAME = 'getState';
-    this.detail = {};
+    this.state = {};
   }
 }
 
 const Whisper = new WhisperEvents();
 
-Whisper.on('setAsync', detail => {
+Whisper.on('setAsync', state => {
   setImmediate(() => {
-    Whisper.detail = Object.assign(Whisper.detail, detail, {});
+    Whisper.state = Object.assign(Whisper.state, state, {});
   });
 });
 
 Whisper.on('getAsync', fn => {
   setImmediate(() => {
-    return fn(Whisper.detail);
+    return fn(Whisper.state);
   });
 });
 
-Whisper.on('set', detail => {
-  Whisper.detail = Object.assign(Whisper.detail, detail, {});
+Whisper.on('set', state => {
+  Whisper.state = Object.assign(Whisper.state, state, {});
 });
 
 Whisper.on('get', fn => {
-  return fn(Whisper.detail);
+  return fn(Whisper.state);
 });
 
 module.exports = Whisper;

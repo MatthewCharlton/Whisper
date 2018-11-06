@@ -27,18 +27,18 @@
       var test3 = document.getElementById('test3')
       var test4 = document.getElementById('test4')
 
-      W.get(test, (e) => { test.textContent = e.detail.blah })
-      W.get(test2, (e) => { test2.textContent = e.detail.blah2 })
-      W.get(test3, (e) => { test3.textContent = e.detail.blah3 })
-      W.get(test4, (e) => { test4.textContent = e.detail.blah4 })
+      W.get(test, (e) => { test.textContent = e.state.blah })
+      W.get(test2, (e) => { test2.textContent = e.state.blah2 })
+      W.get(test3, (e) => { test3.textContent = e.state.blah3 })
+      W.get(test4, (e) => { test4.textContent = e.state.blah4 })
       W.set({ blah: 'Test', blah2: 1, blah3: 0 })
 
-      var timer = setInterval(() => W.set({ blah3: W.detail.blah3 + 1 }), 1000)
+      var timer = setInterval(() => W.set({ blah3: W.state.blah3 + 1 }), 1000)
 
       document.getElementById('button').addEventListener('click', handleClick)
 
       function handleClick() {
-        W.set({ blah2: parseInt(W.detail.blah2 + 1), blah: 'IJbsdcjbcn' })
+        W.set({ blah2: parseInt(W.state.blah2 + 1), blah: 'IJbsdcjbcn' })
 
         console.log(W)
       }
