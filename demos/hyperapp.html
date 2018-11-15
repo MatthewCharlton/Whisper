@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>hyperapp</title>
+    <script src="https://unpkg.com/hyperapp"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+    <script src="../src/clientSide/index.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>hyperapp</title>
-  <script src="https://unpkg.com/hyperapp"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
-  <script src="../src/clientSide/index.js"></script>
-</head>
+  <body>
+    <script type="text/babel">
+      const { h, app } = hyperapp;
+      //@jsx h
 
-<body>
-  <script type="text/babel">
-    const { h, app } = hyperapp;
-    //@jsx h
+      const Hello = ({ name }) => <h1>Hello {name}</h1>;
 
-    Whisper.actions = {
-      changeName: name => state => Whisper.set({ name: name })
-    };
+      const Ticker = ({ count }) => {
+        setTimeout(() => {
+          Whisper.set({ count: count + 1 || 0 });
+        }, 1000);
+        return <p>{count % 2 !== 0 ? 'tick' : 'tock'}</p>;
+      };
 
-    const Hello = ({ name }) => <h1>Hello {name}</h1>
+      const App = state => (
+        <div>
+          <Hello name={state.name} />
+          <button onclick={() => Whisper.set({ name: 'Batman' })}>
+            I'm Batman
+          </button>
+          <input oninput={e => Whisper.set({ name: e.target.value })} />
+          <Ticker count={state.count} />
+        </div>
+      );
 
-    const view = (state, actions) => (
-      <div>
-        <Hello name={state.name} />
-        <button onclick={() => actions.changeName('Batman')}>I'm Batman</button>
-        <input oninput={(e) => Whisper.set({name: e.target.value})} />
-      </div>
-    );
-
-    app(Whisper.state, Whisper.actions, view, document.body);
-
-    Whisper.get(document.body, () => app(Whisper.state, Whisper.actions, view, document.body) )
-  </script>
-</body>
-
+      Whisper.get(document.body, () =>
+        app(Whisper.state, {}, App, document.body)
+      );
+      Whisper.set()
+    </script>
+  </body>
 </html>
