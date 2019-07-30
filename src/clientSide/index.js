@@ -18,7 +18,6 @@ var Whisper = {
     return new CustomEvent(event, options);
   },
   subscribe(element, event, eventName, fn) {
-    this.unsubscribe(element, event, eventName);
     this.subs.push({
       element: element,
       eventName: eventName,
@@ -28,10 +27,11 @@ var Whisper = {
   },
   unsubscribe(element) {
     var subsArr = this.subs;
-    subsArr.forEach(function(item) {
+    subsArr.forEach(function(item, i) {
       if (item.element === element) {
         element.removeEventListener(item.eventName, item.event);
-        subsArr.splice(subsArr.indexOf(item), 1);
+        subsArr[i] = subsArr[subsArr.length - 1];
+        subsArr.pop();
       }
     });
   },
@@ -40,7 +40,7 @@ var Whisper = {
     var event = this.create(eventName, {
       cancelable: true,
       bubbles: true,
-      state: this.state
+      detail: this.state
     });
     this.subscribe(element, event, eventName, fn);
   },
