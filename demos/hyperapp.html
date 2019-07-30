@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>hyperapp</title>
-    <script src="https://unpkg.com/hyperapp"></script>
+    <script src="https://unpkg.com/hyperapp@1.2.10/dist/hyperapp.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
     <script src="../src/clientSide/index.js"></script>
   </head>
@@ -38,7 +38,7 @@
       Whisper.get(document.body, () =>
         app(Whisper.state, {}, App, document.body)
       );
-      Whisper.set()
+      Whisper.set();
     </script>
   </body>
 </html>

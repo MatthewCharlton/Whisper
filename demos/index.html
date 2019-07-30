@@ -1,50 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Whisper Dev</title>
+    <script src="../src/clientSide/index.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Whisper Dev</title>
-  <script src="../src/clientSide/index.js"></script>
-</head>
+  <body>
+    <h1
+      style="width: 100px; color: white; background: red; padding: 10px;"
+      id="test"
+    >
+      0
+    </h1>
+    <h1
+      style="width: 100px; color: white; background: green; padding: 10px;"
+      id="test2"
+    >
+      0
+    </h1>
+    <button id="button">Click Me</button>
+    <h1
+      style="width: 100px; color: white; background: blue; padding: 10px;"
+      id="test3"
+    >
+      0
+    </h1>
+    <br />
+    <input
+      placeholder="Type in me"
+      onkeyup="Whisper.set({blah4: this.value})"
+    />
+    <h1
+      id="test4"
+      style="width: 300px; color: white; background: black; padding: 5px; height: 37px"
+    ></h1>
 
-<body>
-  <h1 style="width: 100px; color: white; background: red; padding: 10px;" id="test">0</h1>
-  <h1 style="width: 100px; color: white; background: green; padding: 10px;" id="test2">0</h1>
-  <button id="button">Click Me</button>
-  <h1 style="width: 100px; color: white; background: blue; padding: 10px;" id="test3">
-    0
-  </h1>
-  <br />
-  <input placeholder="Type in me" onkeyup="Whisper.set({blah4: this.value})" />
-  <h1 id="test4" style="width: 300px; color: white; background: black; padding: 5px; height: 37px"></h1>
+    <script>
+      (function(W) {
+        var test = document.getElementById('test');
+        var test2 = document.getElementById('test2');
+        var test3 = document.getElementById('test3');
+        var test4 = document.getElementById('test4');
 
-  <script>
-    (function (W) {
-      var test = document.getElementById('test')
-      var test2 = document.getElementById('test2')
-      var test3 = document.getElementById('test3')
-      var test4 = document.getElementById('test4')
+        W.get(test, e => {
+          test.textContent = e.detail.blah;
+        });
+        W.get(test2, e => {
+          test2.textContent = e.detail.blah2;
+        });
+        W.get(test3, e => {
+          test3.textContent = e.detail.blah3;
+        });
+        W.get(test4, e => {
+          test4.textContent = e.detail.blah4;
+        });
+        W.set({ blah: 'Test', blah2: 1, blah3: 0 });
 
-      W.get(test, (e) => { test.textContent = e.state.blah })
-      W.get(test2, (e) => { test2.textContent = e.state.blah2 })
-      W.get(test3, (e) => { test3.textContent = e.state.blah3 })
-      W.get(test4, (e) => { test4.textContent = e.state.blah4 })
-      W.set({ blah: 'Test', blah2: 1, blah3: 0 })
+        var timer = setInterval(
+          () => W.set({ blah3: W.state.blah3 + 1 || 0 }),
+          1000
+        );
 
-      var timer = setInterval(() => W.set({ blah3: W.state.blah3 + 1 }), 1000)
+        document
+          .getElementById('button')
+          .addEventListener('click', handleClick);
 
-      document.getElementById('button').addEventListener('click', handleClick)
-
-      function handleClick() {
-        W.set({ blah2: parseInt(W.state.blah2 + 1), blah: 'IJbsdcjbcn' })
-
-        console.log(W)
-      }
-    })(Whisper)
-
-  </script>
-</body>
-
+        function handleClick() {
+          W.set({ blah2: parseInt(W.state.blah2 + 1), blah: 'IJbsdcjbcn' });
+        }
+      })(Whisper);
+    </script>
+  </body>
 </html>
